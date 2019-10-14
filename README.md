@@ -70,7 +70,7 @@ IDE : Spring Tool Suite (STS)
 Proje yapýlandýrmasý(konfigürasyonu) Maven tarafýndan yapýlmýþtýr. Maven eklenti özelliði sayesinde bir servlet container olan Jetty sunucu yazýlýmýný projenin içinde taþýmaya imkan saðlýyor.
 Maven’ýn konfigürasyon dosyasý olan pom.xml’e Jetty’nin plugi eklenmiþtir.
 Eclipse yada STS de projeyi "Maven Project" olarak import ettikten sonra 
-projeye sað týklayýp Run As -> Maven build seçerek gelen ekranda Goals kýsmýna "mvn jetty:run" kodunu yazýp çalýþtýmamýz gerekmektedir.
+projeye sað týklayýp Run As -> Maven build seçerek gelen ekranda Goals kýsmýna "jetty:run" kodunu yazýp çalýþtýmamýz gerekmektedir.
 Started jetty server durumuna geldiðinde tarayýcýdan "http://localhost:8080/" adresinden projeye ulaþýlabilir.
 
 Test class larýný çalýþtýrmak için de Run As -> jUnit Test seçerek test metodlarý çalýþtýrýlmaktadýr.
