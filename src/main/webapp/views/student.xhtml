@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	>
+	
+<h:body>
+
+<ui:composition template="../template/common/commonLayout.xhtml">
+		<ui:define name="content">
+		
+<!-- <p:messages id="messages" /> -->
+<p:growl id="messages" />
+
+<p:dataTable value="#{studentController.students}"  rows="5" paginator="true" 
+	var="student" id="studentTable">
+	<p:column headerText="Öğrenci Adı" sortBy="#{student.name}" >#{student.name} #{student.surname}</p:column>
+	<p:column headerText="Öğrenci Cep Telefon No" sortBy="#{student.mobileNumber}" >#{student.mobileNumber}</p:column>
+	<p:column headerText="Şehir" sortBy="#{student.cityBean.cityName}">#{student.cityBean.cityName}</p:column>
+	<p:column headerText="İlçe" sortBy="#{student.districtBean.districtName}">#{student.districtBean.districtName}</p:column>
+	<p:column headerText="Açıklama" sortBy="#{student.description}">#{student.description}</p:column>
+	<p:column headerText="Kaydedilen Tarih" sortBy="#{student.dateCreated}">#{student.dateCreated}</p:column>	
+	<p:column headerText="İşlemler">
+		<h:form>
+			<p:commandButton value="Güncelle" action="#{studentController.setStudent(student)}" update=":studentForm" resetValues="true" oncomplete="PF('studentDialog').show()" icon="fa fa-pencil" />
+			<p:commandButton value="Sil" action="#{studentController.remove(student)}" update=":studentTable, :messages" icon="fa fa-trash">
+				<p:confirm header="Uyarı" message="Öğrenciyi silmek istediğinizde öğrenciye ait belgeler de silinecektir.Silmek İstediğinizden Emin Misiniz?" icon="fa fa-exclamation" />
+			</p:commandButton>
+			<p:commandButton value="Öğrenci Belge İşlemleri"  action="#{studentFileController.onload()}"  icon="fa fa-file-text" >
+    				<f:param name="pageId" value="#{student.id}"></f:param>
+            </p:commandButton>
+		</h:form>
+	</p:column>
+</p:dataTable>
+
+<br />
+<h:form>
+	<p:commandButton value="Öğrenci Ekle" action="#{studentController.clear()}" 
+					 update=":studentForm" 
+					 oncomplete="PF('studentDialog').show()"
+					 resetValues="true" />
+</h:form>
+
+<p:dialog widgetVar="studentDialog" closeOnEscape="true" modal="true" header="Öğrenci Ekle" width="450">
+	<h:form id="studentForm" style="width:400px" >
+		<p:messages />
+		<p:focus />
+	
+		<p:panelGrid columns="2" style="width:400px">
+			Öğrenci Adı *:
+			<p:inputText value="#{studentController.student.name}" required="true" requiredMessage="Lütfen Öğrenci adı giriniz..."/>
+			Öğrenci Soyadı *:
+			<p:inputText value="#{studentController.student.surname}" required="true" requiredMessage="Lütfen Öğrenci adı giriniz..."/>
+			Cep Telofon No:
+			<p:inputMask value="#{studentController.student.mobileNumber}" mask="(999) 999-9999"/>
+			Şehir *:
+			<p:selectOneMenu id="cityId" value="#{studentController.student.cityId}" 
+			required="true" requiredMessage="Lütfen Şehir Seçiniz..." style="width:150px">
+				<p:ajax listener="#{studentController.onCityChange}" update="districtId"  />
+				<f:selectItem itemLabel="Şehir Seçiniz" itemValue="#{null}" />
+         	    <f:selectItems  value="#{studentController.cities}" var="city" itemLabel="#{city.cityName}" itemValue="#{city.id}" />
+      		</p:selectOneMenu>      
+			İlçe *:
+			<p:selectOneMenu id="districtId" value="#{studentController.student.districtId}"
+			required="true" requiredMessage="Lütfen İlçe Seçiniz..."  style="width:150px">
+         	   <f:selectItem itemLabel="İlçe Seçiniz" itemValue="#{null}" />
+         	   <f:selectItems  value="#{studentController.districts}" var="district" itemLabel="#{district.districtName}" itemValue="#{district.id}" />
+      		</p:selectOneMenu>     
+			Açıklama:
+			<p:inputText value="#{studentController.student.description}" />
+		</p:panelGrid>
+	
+		<br />
+	
+		<p:commandButton value="Kaydet" action="#{studentController.save()}" 
+					 update="studentForm, :studentTable"
+					 oncomplete="handleDialogSubmit(args, 'studentDialog')" />
+	</h:form>
+</p:dialog>
+
+<h:form>
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+</h:form>
+
+
+<script type="text/javascript">
+    function handleDialogSubmit(args, dialogName) {
+        if (!args.validationFailed) {
+            PF(dialogName).hide();
+        }
+    }
+</script>
+
+</ui:define>
+</ui:composition>
+
+</h:body>
+</html>

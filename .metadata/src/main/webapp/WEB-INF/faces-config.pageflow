@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15703130094270" configfile="/StudentInformationSystemProject/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" id="pf15706323033520" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf157087885889516 pf157087885889517 pf157087885889518 pf157087885889519" path="home.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="city.xhtml?faces-redirect=true" id="pf157087885889520" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf157087885889516" path="city.xhtml?faces-redirect=true"/>
+  <nodes xsi:type="pageflow:PFPage" name="district.xhtml?faces-redirect=true" id="pf157087885889521" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf157087885889517" path="district.xhtml?faces-redirect=true"/>
+  <nodes xsi:type="pageflow:PFPage" name="student.xhtml?faces-redirect=true" id="pf157087885889522" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf157087885889518" path="student.xhtml?faces-redirect=true"/>
+  <nodes xsi:type="pageflow:PFPage" name="studentFile.xhtml?faces-redirect=true" id="pf157087885889523" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf157087885889519" path="studentFile.xhtml?faces-redirect=true"/>
+  <links id="pf157087885889516" target="pf157087885889520" source="pf15706323033520" outcome="city" redirect="true"/>
+  <links id="pf157087885889517" target="pf157087885889521" source="pf15706323033520" outcome="district" redirect="true"/>
+  <links id="pf157087885889518" target="pf157087885889522" source="pf15706323033520" outcome="student" redirect="true"/>
+  <links id="pf157087885889519" target="pf157087885889523" source="pf15706323033520" outcome="student file" redirect="true"/>
+</pageflow:Pageflow>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	>
+
+<h:body>
+
+<ui:composition template="../template/common/commonLayout.xhtml">
+		<ui:define name="content">
+
+<p:growl id="messages" />
+
+<p:dataTable value="#{studentFileController.studentFiles}"  rows="5" paginator="true" 
+			var="studentFile" id="studentFileTable" 
+			sortBy="#{studentFile.studentBean.name}" expandableRowGroups="true">
+	<p:headerRow>
+		<p:column colspan="3">
+			<h:outputText value="#{studentFile.studentBean.name} #{studentFile.studentBean.surname}" />
+				</p:column>
+			</p:headerRow>
+				
+		<p:column headerText="Belge Başlığı" > <h:outputText value="#{studentFile.header}" /> </p:column>
+		<p:column headerText="Yüklenen Belge Adı" > <h:outputText value="#{studentFile.fileName}" /> </p:column>
+<!-- 		<p:column headerText="Belge"> <h:outputText value="#{studentFile.file}" /></p:column> -->
+		<p:column headerText="İşlemler">
+			<h:form>
+				<p:commandButton value="İndir" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="fa fa-download">
+						<p:fileDownload value="#{studentFileController.dowload(studentFile.id)}" />
+				</p:commandButton>
+				<p:commandButton value="Güncelle" action="#{studentFileController.setStudentFile(studentFile)}"
+					update=":studentFileForm" resetValues="true" oncomplete="PF('studentFileDialog').show()" icon="fa fa-pencil" />
+				<p:commandButton value="Sil"
+					action="#{studentFileController.remove(studentFile)}" update=":studentFileTable, :messages" icon="fa fa-trash">
+					<p:confirm header="Uyarı" message="Kaydı Silmek İstediğinizden Emin Misiniz?" icon="fa fa-exclamation" />
+				</p:commandButton>
+			</h:form>
+		</p:column>
+
+</p:dataTable>
+
+<br />
+<h:form>
+	<p:commandButton value="Öğrenci Belgesi Ekle" action="#{studentFileController.clear()}" 
+					 update=":studentFileForm" 
+					 oncomplete="PF('studentFileDialog').show()"
+					 resetValues="true" />
+</h:form>
+
+<p:dialog widgetVar="studentFileDialog" closeOnEscape="true" modal="true" header="Öğrenci Belgesi Ekle" width="450">
+	<h:form id="studentFileForm" enctype="multipart/form-data" style="width:400px" >
+		<p:messages />
+		<p:focus />
+		
+		<p:panelGrid columns="2" style="width:400px">
+			Öğrenci *:
+			<p:selectOneMenu value="#{studentFileController.studentFile.studentId}" disabled="#{studentFileController.studentId != 0}"
+					required="true" requiredMessage="Lütfen Öğrenci Seçiniz..."  style="width:150px">
+					<f:selectItem itemLabel="Öğrenci Seçiniz" itemValue="#{null}" />
+					<f:selectItems
+						value="#{studentFileController.students}"
+						var="student" itemLabel="#{student.name}"
+						itemValue="#{student.id}" />
+			</p:selectOneMenu>
+			Belge Adı *:
+			<p:inputText value="#{studentFileController.studentFile.header}" required="true" requiredMessage="Lütfen Belge Adını Giriniz.."  />			
+			<p></p>
+			<h:form enctype="multipart/form-data" >
+     
+  				<p:fileUpload value="#{studentFileController.file}" auto="false" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" />
+                <p:separator/>
+     
+			</h:form>
+		</p:panelGrid>
+		
+		<br />
+		
+		<p:commandButton value="Kaydet" action="#{studentFileController.save()}"   ajax="false"
+					 update="studentFileForm, :studentFileTable"
+					 oncomplete="handleDialogSubmit(args, 'studentFileDialog')" />
+					 
+	</h:form>
+</p:dialog>
+
+<h:form>
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+</h:form>
+
+
+<script type="text/javascript">
+    function handleDialogSubmit(args, dialogName) {
+        if (!args.validationFailed) {
+            PF(dialogName).hide();
+        }
+    }
+    
+    function start() {
+        PF('statusDialog').show();
+    }
+     
+    function stop() {
+        PF('statusDialog').hide();
+    }
+
+</script>
+
+</ui:define>
+</ui:composition>
+
+</h:body>
+</html>

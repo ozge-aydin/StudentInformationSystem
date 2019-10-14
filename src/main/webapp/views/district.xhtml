@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	>
+
+<h:body>
+
+<ui:composition template="../template/common/commonLayout.xhtml">
+		<ui:define name="content">
+
+<!-- <p:messages id="messages" /> -->
+<p:growl id="messages" />
+
+<p:dataTable value="#{districtController.districts}" rows="7" paginator="true" 
+	var="district" id="districtTable" >
+	<p:column headerText="Şehir" sortBy="#{district.cityBean.cityName}" >#{district.cityBean.cityName}</p:column>
+	<p:column headerText="İlçe" sortBy="#{district.districtName}" >#{district.districtName}</p:column>
+	<p:column headerText="İşlemler">
+		<h:form>
+			<p:commandButton value="Güncelle" action="#{districtController.setDistrict(district)}" update=":districtForm" resetValues="true" oncomplete="PF('districtDialog').show()" icon="fa fa-pencil" />
+			<p:commandButton value="Sil" action="#{districtController.remove(district)}" update=":districtTable, :messages" icon="fa fa-trash">
+				<p:confirm header="Uyarı" message="Kaydı Silmek İstediğinizden Emin Misiniz?" icon="fa fa-exclamation" />
+			</p:commandButton>
+		</h:form>
+	</p:column>
+</p:dataTable>
+
+<br />
+<h:form>
+	<p:commandButton value="İlçe Ekle" action="#{districtController.clear()}" 
+					 update=":districtForm" 
+					 oncomplete="PF('districtDialog').show()"
+					 resetValues="true" />
+</h:form>
+
+<p:dialog widgetVar="districtDialog" closeOnEscape="true" modal="true" header="İlçe Ekle" style="margin-bottom:10px;" width="400" height="200">
+	<h:form id="districtForm" style="width:350px">
+		<p:messages />
+		<p:focus />
+	
+		<p:panelGrid columns="2" style="width:350px">
+			 Şehir *:
+			<p:selectOneMenu id="city_id" value="#{districtController.district.cityId}" 
+			required="true" requiredMessage="Lütfen Şehir seçiniz..." style="width:150px">
+			  <f:selectItem itemLabel="Şehir Seçiniz" itemValue="#{null}" />
+<!--        	      <f:selectItem itemLabel="Şehir Seçiniz" itemValue="0" noSelectionOption="true" /> -->
+       	      <f:selectItems  value="#{districtController.cities}" var="city" itemLabel="#{city.cityName}" itemValue="#{city.id}" />
+      		</p:selectOneMenu>      
+			İlçe *:
+			<p:inputText value="#{districtController.district.districtName}" required="true" requiredMessage="Lütfen Bölge adı giriniz..." />
+		</p:panelGrid>
+	
+		<br />
+	
+		<p:commandButton value="Kaydet" action="#{districtController.save()}" 
+					 update="districtForm, :districtTable"
+					 oncomplete="handleDialogSubmit(args, 'districtDialog')" />
+	</h:form>
+</p:dialog>
+
+<h:form>
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="Evet" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Hayır" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+</h:form>
+
+
+
+<script type="text/javascript">
+    function handleDialogSubmit(args, dialogName) {
+        if (!args.validationFailed) {
+            PF(dialogName).hide();
+        }
+    }
+</script>
+
+</ui:define>
+</ui:composition>
+
+</h:body>
+</html>
