@@ -1,20 +1,20 @@
 
-# Proje Adý :	
+# Proje Adý 
 
 Öðrenci Bilgi Sistemi (Student Information System = SIS)
 	
 	
-# Projeyi geliþtiren :
+# Projeyi geliþtiren 
 
 Özge AYDIN
 
 
-# Versiyon : 
+# Versiyon  
 
 0.0.1-SNAPSHOT	
 	
 	
-# Projenin Sunduklarý:
+# Projenin Sunduklarý
 
 ## 1- þEHÝRLER
 1.1- Tüm þehirler sayfada PrimeFaces ýn table yapýsý ile listelenebilmektedir.
@@ -54,7 +54,7 @@
 * Öðrenci cep telefonu numarasý için mask kullanýldý.
 
 
-# Kullanýlan Teknojiler :	
+# Kullanýlan Teknojiler 	
 
 1-Kullanýcý arayüzü için JSF ve Primefaces kullanýldý.
 2-Proje yapýlandýrmasý(konfigürasyonu) Maven tarafýndan yapýldý.
@@ -65,12 +65,13 @@
 IDE : Spring Tool Suite (STS)
 
 	
-# Proje Çalýþtýrýlmasý :	
+# Proje Çalýþtýrýlmasý 	
 
 Proje yapýlandýrmasý(konfigürasyonu) Maven tarafýndan yapýlmýþtýr. Maven eklenti özelliði sayesinde bir servlet container olan Jetty sunucu yazýlýmýný projenin içinde taþýmaya imkan saðlýyor.
 Maven’ýn konfigürasyon dosyasý olan pom.xml’e Jetty’nin plugi eklenmiþtir.
-Eclipse yada STS de projeye sað týklayýp Run As -> Maven build seçerek gelen ekranda Goals kýsmýna "mvn jetty:run" kodunu yazýp çalýþtýmamýz gerekmektedir.
-Started jetty server durumuna geldiðinde tarayýcýdan "http://localhost:8080/" gelerek projeyi açabiliiz.
+Eclipse yada STS de projeyi "Maven Project" olarak import ettikten sonra 
+projeye sað týklayýp Run As -> Maven build seçerek gelen ekranda Goals kýsmýna "mvn jetty:run" kodunu yazýp çalýþtýmamýz gerekmektedir.
+Started jetty server durumuna geldiðinde tarayýcýdan "http://localhost:8080/" adresinden projeye ulaþýlabilir.
 
 Test class larýný çalýþtýrmak için de Run As -> jUnit Test seçerek test metodlarý çalýþtýrýlmaktadýr.
 Ya da test classlarýnýn içinde Test metodalarý üzerinden de çalýþtýrýlabilmektedir.
